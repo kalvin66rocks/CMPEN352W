@@ -56,7 +56,7 @@ void INIT_PIC (void);
 //----------------------------------------------
 void main (void) {
 
-	int8 i;
+	int8 i=0;
 
 	INIT_PIC();
 
@@ -96,24 +96,34 @@ void main (void) {
 				break;
 				
 			//--------------------------------------------
-			// Display a microphone samples
+			// forward
 			//--------------------------------------------
-			case 'm':
-                ADCON0bits.ADON = 0;
-                ADCON1 = 0b00000000;	// AN0 and Vcc and GND as positive and negative reference voltages
-                ADCON0 = 0b00010000;	// Select channel RA5/AN4
-                ADCON2 = 0b00101110;	// 12Tad acquisition time.  Use Fosc/64 for 1uS sampling clock
-                ADCON0bits.ADON = 1;	// Turn on ADC
-				ADCON0bits.GO_NOT_DONE = 1;		// start a new conversion
-				while (	ADCON0bits.GO_NOT_DONE);		
-				printf("%d",ADRESH);
+			case 'f':
+                printf("going forward\r\n");
 				break;
-				
+			//--------------------------------------------
+			// forward
+			//--------------------------------------------
+			case 'r':
+                printf("going reverse\r\n");
+				break;
+            //--------------------------------------------
+			// forward
+			//--------------------------------------------
+			case 'l':
+                printf("going left\r\n");
+				break;
 			//--------------------------------------------
 			// Toggle LED on RB5 to say hello
 			//--------------------------------------------
-			case 'l':
-				LATBbits.LATB5 ^= 1;
+			case 'b':
+				printf("going backward\r\n");
+				break;
+            //--------------------------------------------
+			// Toggle LED on RB5 to say hello
+			//--------------------------------------------
+			case 's':
+				printf("shit stopped\r\n");
 				break;
 
 			//--------------------------------------------
@@ -182,8 +192,8 @@ void INIT_PIC (void) {
 //-----------------------------------------------------------------------------
 void putch(char c) {
     
-    while( ! TX1IF)
+    while( ! TX2IF)
         continue;
-    TX1REG = c;
+    TX2REG = c;
 
 }
